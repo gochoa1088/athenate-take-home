@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Athenate Take Home Project
+
+A Next.js application for managing user profiles with a modern UI and server-side functionality.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.x or later
+- npm or yarn
+- Git
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd athenate-take-home
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up the database:
+
+```bash
+# Create a .env file in the root directory
+echo "DATABASE_URL=\"file:./dev.db\"" > .env
+
+# Generate Prisma client
+npx prisma generate
+
+# Run database migrations
+npx prisma migrate dev
+```
+
+### Running the Development Server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/src/app` - Next.js app directory containing pages and components
+- `/prisma` - Database schema and migrations
+- `/generated` - Generated Prisma client
+- `/public` - Static assets
 
-## Learn More
+### Key Features
 
-To learn more about Next.js, take a look at the following resources:
+- Server-side rendering with Next.js
+- SQLite database with Prisma ORM
+- Server Actions for form handling
+- Modern UI with Tailwind CSS
+- TypeScript for type safety
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Available Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/create` - Create a new profile
+- `/profiles` - View all profiles (if implemented)
 
-## Deploy on Vercel
+### Database Schema
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application uses a SQLite database with the following schema:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```prisma
+model Profile {
+  id       Int    @id @default(autoincrement())
+  name     String
+  location String?
+  image    String?
+  headline String?
+  aboutMe  String?
+
+  @@map("profiles")
+}
+```
+
+### Development
+
+- The project uses TypeScript for type safety
+- Tailwind CSS for styling
+- Prisma for database operations
+- Next.js 14 with App Router
+
+### Troubleshooting
+
+If you encounter any issues:
+
+1. Make sure all dependencies are installed
+2. Verify the database is properly set up
+3. Check that the `.env` file exists with the correct DATABASE_URL
+4. Ensure you're using a compatible Node.js version

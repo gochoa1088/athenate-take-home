@@ -1,55 +1,66 @@
 import Image from "next/image";
+import { PrismaClient } from "../../generated/prisma";
+import Link from "next/link";
 
-export default function Home() {
+const DEFAULT_IMAGE =
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D";
+
+export default async function Home() {
+  const prisma = new PrismaClient();
+
+  const profile = await prisma.profile.findUnique({
+    where: {
+      id: 1,
+    },
+  });
+
+  const doesProfileExist = profile !== null;
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <main className="flex flex-col gap-[32px] w-4xl row-start-2 items-center sm:items-start">
+        <div className="flex justify-between w-full items-center">
+          <h1 className="text-2xl font-bold">Welcome to your profile page!</h1>
+          {doesProfileExist ? (
+            <Link
+              className="hover:bg-blue-600 transition-colors duration-300 bg-blue-500 text-white p-2 rounded-md"
+              href="/edit"
+            >
+              Edit Profile
+            </Link>
+          ) : (
+            <Link
+              className="hover:bg-blue-600 transition-colors duration-300 bg-blue-500 text-white p-2 rounded-md"
+              href="/create"
+            >
+              Create Profile
+            </Link>
+          )}
         </div>
+        {doesProfileExist && (
+          <section className="w-full flex gap-2 border-2 border-gray-300 rounded-md p-4">
+            <div className="flex flex-col gap-2 w-1/4">
+              <Image
+                className="rounded-full w-40 h-40 object-cover self-center"
+                src={profile?.image || DEFAULT_IMAGE}
+                alt={profile?.name}
+                width={200}
+                height={200}
+              />
+              <h1 className="text-2xl font-bold self-center">
+                {profile?.name}
+              </h1>
+            </div>
+            <div className="flex flex-col gap-2 w-3/4">
+              <div className="flex gap-2 w-3/4 text-lg">
+                <p>{profile?.headline || "No headline"}</p>
+                <span className="text-gray-500">•</span>
+                <p>{profile?.location || "No location"}</p>
+              </div>
+              <p>{profile?.aboutMe || "Edit your profile to add a bio"}</p>
+            </div>
+          </section>
+        )}
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
