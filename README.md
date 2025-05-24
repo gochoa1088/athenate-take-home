@@ -55,7 +55,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `/src/app` - Next.js app directory containing pages and components
 - `/prisma` - Database schema and migrations
 - `/generated` - Generated Prisma client
-- `/public` - Static assets
 
 ### Key Features
 
@@ -67,8 +66,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Available Routes
 
+- `/` - View your profile
 - `/create` - Create a new profile
-- `/profiles` - View all profiles (if implemented)
+- `/edit` - Edit your profile
 
 ### Database Schema
 
@@ -91,7 +91,7 @@ model Profile {
 
 - The project uses TypeScript for type safety
 - Tailwind CSS for styling
-- Prisma for database operations
+- Prisma for database operations and generated types
 - Next.js 14 with App Router
 
 ### Troubleshooting
